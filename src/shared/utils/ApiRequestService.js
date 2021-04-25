@@ -24,6 +24,7 @@ export function request(options, validateStatus = true) {
 
     return axios.request(config)
         .then(response => {
+            console.log(response.data)
             if (response.data && response.data?.success)
                 return {...response.data, success: response.data.success, info: response.data.message}
             else {
@@ -34,10 +35,14 @@ export function request(options, validateStatus = true) {
         })
         .catch((error) => {
             const {status} = error.response;
-            if (status === 401 || status === 403) {
+            if(status === 400)
+                toastErrorMessage(error.response?.data?.message)
+            else if (status === 401 || status === 403) {
                 removeTokenCookies();
-                // showErrorToast(status === 401 ? 'Please Login Again' : 'You are not authorized to access this url');
-                window.location.replace("/");
+                if(config.url.toLowerCase().endsWith("signin"))
+                    toastErrorMessage("Username or password is incorrect");
+                else
+                    toastErrorMessage(error.response?.data?.message)
             } else if (status === 404) {
                 // showErrorToast("Not found");
             } else if (status === 400 || status === 500) {

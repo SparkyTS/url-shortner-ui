@@ -3,10 +3,12 @@ import SignUp from "./SignUp";
 import Login from "./Login";
 import {toastErrorMessage, toastInfoMessage} from "../../shared/components/ToastMessage";
 import {signInUser, signUpUser} from "../../api/AuthApi";
-import {setTokenCookies} from "../../shared/utils/tokenHandler";
+import {getAccessTokenCookie, setTokenCookies} from "../../shared/utils/tokenHandler";
 import {getCurrentUser, hasUniqueEmail, hasUniqueName} from "../../api/UserApi";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setCurrentUser} from "../../redux/user/UserAction";
+import {regexEnum} from "../../shared/enums";
+import {Redirect, useHistory} from "react-router";
 
 const initialValues = {
     name: '',
@@ -15,8 +17,13 @@ const initialValues = {
     password: ''
 }
 export default function AuthPage() {
-    const [isSignUp, setIsSignUp] = React.useState(false);
+
     const dispatch = useDispatch();
+    const history = useHistory();
+
+    const isLoggedIn = useSelector(({user}) => user.currentUser.name && getAccessTokenCookie())
+
+    const [isSignUp, setIsSignUp] = React.useState(false);
     const [formData, setFormData] = React.useState({
         ...initialValues
     });
@@ -41,6 +48,8 @@ export default function AuthPage() {
             dispatch(setCurrentUser(user.data));
             toastInfoMessage(`Hello ${user.data.name}, Welcome to our shorten URL service`);
         }
+        console.log('pushing to the dashboard page');
+        history.push("/dashboard");
     };
 
     const onLogin =async () => {
@@ -57,14 +66,13 @@ export default function AuthPage() {
 
     const onSignUp = async () => {
         const {name, username, email, password} = formData;
-        //TODO: add regex validation
         if(!username){
             toastErrorMessage("Please enter a valid username");
-        } else if (!email) {
+        } else if (regexEnum.emailRegex.test(email)) {
             toastErrorMessage("Please enter a valid email");
         }
-        else if (!password) {
-            toastErrorMessage("Please enter a valid password");
+        else if (regexEnum.passRegex.test(password)) {
+            toastErrorMessage("Password must contain at least eight characters, at least one number and both lower and uppercase letters and special characters\"");
         } else {
             const res = await Promise.all([hasUniqueEmail(email), hasUniqueName(username)]);
             //if username and email both are unique sign up the user
@@ -76,7 +84,10 @@ export default function AuthPage() {
     }
 
     return (
-        <div className={`container ${isSignUp ? 'sign-up-mode' : ''}`}>
+        <>
+            {isLoggedIn && <Redirect to="/dashboard"/>}
+
+            <div className={`container ${isSignUp ? 'sign-up-mode' : ''}`}>
             <div className="forms-container">
                 <div className="signin-signup">
                     <Login handleChange={handleChange} onLogin={onLogin}/>
@@ -111,6 +122,7 @@ export default function AuthPage() {
                 </div>
             </div>
         </div>
+        </>
     );
 }
 

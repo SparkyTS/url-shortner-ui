@@ -4,6 +4,9 @@ import AuthPage from "../container/auth/AuthPage";
 import Dashboard from "../container/dashboard";
 import Loading from "../shared/components/MyLoader";
 import PrivateRoute from "../shared/components/PrivateRoute";
+import {useSelector} from "react-redux";
+import {getAccessTokenCookie} from "../shared/utils/tokenHandler";
+
 // const UserProfilepage = lazy(() =>
 //     import("./modules/UserProfile/UserProfilePage")
 // );

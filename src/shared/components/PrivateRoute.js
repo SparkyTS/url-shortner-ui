@@ -2,10 +2,10 @@ import React from "react";
 import { Redirect, Route, withRouter } from "react-router-dom";
 
 import {getAccessTokenCookie} from "../utils/tokenHandler";
+import {useSelector} from "react-redux";
 
 const PrivateRoute = ({ component: Component, roles, ...rest }) => {
-    // const user_role = "any"
-    const isLoggedIn = false;
+    const isLoggedIn = useSelector(({user}) => user.currentUser.name && getAccessTokenCookie())
     return (
         <Route
             {...rest}
