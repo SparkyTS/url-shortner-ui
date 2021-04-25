@@ -45,7 +45,7 @@ export default function AuthPage() {
         const user = await getCurrentUser();
         if (user?.success) {
             dispatch(setCurrentUser(user.data));
-            toastInfoMessage(`Hello ${user.data.name}, Welcome to our shorten URL service`);
+            toastInfoMessage(`Welcome to URL shortner service`);
         }
         history.push("/dashboard");
     };
@@ -65,12 +65,15 @@ export default function AuthPage() {
 
     const onSignUp = async () => {
         const {name, username, email, password} = formData;
-        if(!username){
+        if(!name || name.length < 4) {
+            toastErrorMessage("Please enter a valid name")
+        } else if(!username){
             toastErrorMessage("Please enter a valid username");
+        } else if(username.length < 3){
+            toastErrorMessage("Please enter username with at least 4 letters");
         } else if (!regexEnum.emailRegex.test(email)) {
             toastErrorMessage("Please enter a valid email");
-        }
-        else if (!regexEnum.passRegex.test(password)) {
+        } else if (!regexEnum.passRegex.test(password)) {
             toastErrorMessage("Password must contain at least eight characters, at least one number and both lower and uppercase letters and special characters\"");
         } else {
             const res = await Promise.all([hasUniqueEmail(email), hasUniqueName(username)]);
@@ -100,7 +103,7 @@ export default function AuthPage() {
                     <div className="content">
                         <h3>New here ?</h3>
                         <p>
-                            Sign up and generate unlimited shorter url and also you can manage the urls easily.
+                            Sign up to generate unlimited custom shorten urls and manage them for free.
                         </p>
                         <button className="auth-btn transparent" id="sign-up-btn" onClick={toggle}>
                             Sign up
@@ -112,7 +115,7 @@ export default function AuthPage() {
                     <div className="content">
                         <h3>One of us ?</h3>
                         <p>
-                            If you already have account go ahead and sing in to manage all your shortened urls.
+                            If you already have an account, go ahead and sign in to manage all your shortened urls.
                         </p>
                         <button className="auth-btn transparent" id="sign-in-btn" onClick={toggle}>
                             Sign in

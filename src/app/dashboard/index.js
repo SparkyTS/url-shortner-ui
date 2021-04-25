@@ -5,6 +5,7 @@ import {createNewURLMapping, getURLMappings} from "../../api/UrlMappingApi";
 import {appConfigs} from "../../config/app.config";
 import {toastErrorMessage} from "../../shared/components/ToastMessage";
 import MyLoader from "../../shared/components/MyLoader";
+import {regexEnum} from "../../shared/enums";
 
 const initialValues = {
     fullUrl: '',
@@ -59,14 +60,17 @@ function Dashboard() {
 
     const generateNewUrl = async () => {
         const {fullUrl, customShortUrl} = newShortenUrlOptions;
-        if(!fullUrl)
-            toastErrorMessage("Please enter full url to shorten it!")
-        const res = await createNewURLMapping(fullUrl, customShortUrl);
+        if(!fullUrl || !fullUrl.trim()){
+            toastErrorMessage("Please enter valid full url to shorten it !")
+            return;
+        } else if(customShortUrl && regexEnum.inValidShortUrl.test(customShortUrl)){
+            toastErrorMessage("Please enter valid short url !");
+            return;
+        }
+        const res = await createNewURLMapping(fullUrl.trim(), customShortUrl);
         if(res?.success){
             setNewShortenUrlOptions(initialValues);
             setUrlMappings([res.data, ...urlMappings]);
-        } else{
-            toastErrorMessage(res.message)
         }
     }
 
@@ -91,7 +95,7 @@ function Dashboard() {
                     <Col md={12}>
                     <Row className="p-2">
                         <Col md={3} className="m-auto">
-                            <b>Full URL : </b>
+                            <b>Full URL * : </b>
                         </Col>
                         <Col md={9}>
                             <Input onChange={handleChange} placeholder="Enter full url" name="fullUrl" style={{wordBreak: 'break-all', height: 86}}

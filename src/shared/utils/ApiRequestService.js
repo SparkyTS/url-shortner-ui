@@ -1,13 +1,14 @@
 import Cookies from 'universal-cookie';
 import {appConfigs} from "../../config/app.config";
 import {cookieEnum} from "../enums";
-import {removeTokenCookies} from "./tokenHandler";
+import {getRefreshTokenCookie, removeTokenCookies, setTokenCookies} from "./tokenHandler";
 import {toastErrorMessage, toastInfoMessage} from "../components/ToastMessage";
+import {HttpMethod} from "../enums";
 
 
 const axios = require('axios');
 
-export function request(options, validateStatus = true) {
+export function request(options) {
 
     const config = {
         headers: options['headers'] ? options['headers'] : {'Content-Type': 'application/json'},
@@ -36,21 +37,50 @@ export function request(options, validateStatus = true) {
             }
         })
         .catch((error) => {
+
+            if(!error?.response?.status){
+                toastErrorMessage();
+                return;
+            }
+
             const {status} = error.response;
-            if(status === 400)
+            if(status === 400){
                 toastErrorMessage(error.response?.data?.message)
-            else if (status === 401 || status === 403) {
+            }
+            else if (status === 401) {
+                const refreshToken = getRefreshTokenCookie();
                 removeTokenCookies();
                 if(config.url.toLowerCase().endsWith("signin"))
                     toastErrorMessage("Username or password is incorrect");
-                else
+                else if(refreshToken){
+                    axios.request({
+                        headers:{'Content-Type': 'application/json'},
+                        url: `${appConfigs.API_ROOT}/auth/refreshToken`,
+                        method: HttpMethod.POST,
+                        data: {refreshToken}
+                    }).then(res => {
+                        if(res.status === 201){
+                            setTokenCookies(res.data.data)
+                        } else {
+                            toastErrorMessage("Please login again !");
+                            setTimeout(() => window.location.href = "/", 3000);
+                        }
+                    }).catch(err => {
+                        toastErrorMessage("Please login again !");
+                        setTimeout(() => window.location.href = "/", 3000);
+                    })
+                }
+                else{
                     toastErrorMessage(error.response?.data?.message)
-                setTimeout(() => window.location.href = "/", 3000);
-            } else if (status === 404) {
-
-            } else if (status === 400 || status === 500) {
-
+                    setTimeout(() => window.location.href = "/", 3000);
+                }
+            } else if(status===403){
+                toastErrorMessage("Your are forbidden from accessing this functionality");
             }
-            // toastErrorMessage();
+            else if (status === 404) {
+                toastErrorMessage("Not Found !");
+            } else if (status === 500) {
+                toastErrorMessage();
+            }
         })
 }

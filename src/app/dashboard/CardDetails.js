@@ -4,6 +4,7 @@ import {appConfigs} from "../../config/app.config";
 import {deleteMapping, updateURLMapping} from "../../api/UrlMappingApi";
 import {toastErrorMessage, toastInfoMessage} from "../../shared/components/ToastMessage";
 import useClippy from "use-clippy/use-clippy";
+import {regexEnum} from "../../shared/enums";
 
 export default function CardDetails({urlMapping, updateMapping}) {
 
@@ -42,6 +43,10 @@ export default function CardDetails({urlMapping, updateMapping}) {
             if(!shortUrl) toastErrorMessage("Please enter new short url to update !")
             if(shortUrl === urlMapping.shortUrl) {
                 setMappingOptions({...mappingOptions, isEdit: false});
+                return;
+            }
+            if(shortUrl &&  regexEnum.inValidShortUrl.test(shortUrl)){
+                toastErrorMessage("Please enter valid short url !");
                 return;
             }
             const res = await updateURLMapping(urlMapping.id, shortUrl);
@@ -106,7 +111,7 @@ export default function CardDetails({urlMapping, updateMapping}) {
                                    onChange={handleOnChange} name="shortUrl" type="text" value={shortUrl} maxLength={15} autoFocus/>
                             :
                             <>
-                                <a href={`${appConfigs.API_HOST}/${shortUrl}`}>{shortUrl}</a>
+                                <a href={`${appConfigs.API_HOST}/${shortUrl}`} target="_blank">{shortUrl}</a>
 
                                 <button className="far fa-copy btn" onClick={copyShortenUrl} id="copy-tooltip"/>
                                 <Tooltip

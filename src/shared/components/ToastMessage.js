@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 toast.configure();
 export const toastErrorMessage = (err) => {
-    toast.warn(err || "something went wrong", {
+    toast.warn(err || "Something went wrong", {
         style: {
             background: '#fa595f'
         },

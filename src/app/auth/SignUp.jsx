@@ -19,7 +19,7 @@ export default function SignUp({handleChange, onSignUp}) {
             </div>
             <div className="input-field">
                 <i className="fas fa-lock"/>
-                <input onChange={handleChange} type="password" name="password" placeholder="Password"/>
+                <input onChange={handleChange} type="password" name="password" placeholder="Password" onKeyUp={e => e.keyCode === 13 ? onSignUp() : null}/>
             </div>
             <input onClick={onSignUp} type="button" className="auth-btn" value="Sign up"/>
         </div>
