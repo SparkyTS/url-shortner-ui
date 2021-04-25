@@ -1,13 +1,12 @@
 import React from "react";
 import {Link, useHistory} from "react-router-dom";
 import {removeTokenCookies} from "../../shared/utils/tokenHandler";
-import {useSelector} from "react-redux";
 
 const Topbar = () => {
 
     const history = useHistory();
 
-    const userName = useSelector(({user}) => user.currentUser.name);
+    const userName =  localStorage.getItem("username");
 
     const logout = () => {
         removeTokenCookies();

@@ -45,6 +45,7 @@ export default function AuthPage() {
         const user = await getCurrentUser();
         if (user?.success) {
             dispatch(setCurrentUser(user.data));
+            localStorage.setItem("username", user.data.name);
             toastInfoMessage(`Welcome to URL shortner service`);
         }
         history.push("/dashboard");

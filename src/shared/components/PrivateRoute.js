@@ -1,12 +1,11 @@
 import React from "react";
-import { Redirect, Route, withRouter } from "react-router-dom";
+import {Redirect, Route, withRouter} from "react-router-dom";
 
 import {getAccessTokenCookie} from "../utils/tokenHandler";
-import {useSelector} from "react-redux";
 import Topbar from "../../app/header/Topbar";
 
 const PrivateRoute = ({ component: Component, roles, ...rest }) => {
-    const isLoggedIn = useSelector(({user}) => user.currentUser.name && getAccessTokenCookie())
+    const isLoggedIn = getAccessTokenCookie()
     return (
         <Route
             {...rest}

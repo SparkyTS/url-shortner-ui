@@ -1,8 +1,8 @@
-import { SET_USER_DATA } from "./UserTypes"
+import {SET_USER_DATA} from "./UserTypes"
 
 const initialState = {
     currentUser: {
-        name: 'Guest',
+        name: '',
         username: '',
         email: ''
     }
