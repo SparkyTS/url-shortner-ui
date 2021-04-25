@@ -100,10 +100,10 @@ export default function CardDetails({urlMapping, updateMapping}) {
                     </Col>
                 </Row>
 
-                {/*SHORT URL SECTION*/}
+                {/*SHORTEN URL SECTION*/}
 
                 <Row className="p-2">
-                    <Col md={2} className="m-auto"> <b>Short Url : </b> </Col>
+                    <Col md={2} className="m-auto"> <b>Shorten Url : </b> </Col>
                     <Col md={7}>
                         {appConfigs.API_HOST}/
                         {isEdit ?
@@ -131,7 +131,7 @@ export default function CardDetails({urlMapping, updateMapping}) {
                             <>
                                 <Button id="save" outline color="primary" onClick={(e) => toggleEdit(e, true)}>Save</Button>
                                 &nbsp;
-                                <Button outline color="warning" onClick={toggleEdit}>Cancel</Button>
+                                <Button outline color="secondary" onClick={toggleEdit}>Cancel</Button>
                             </>
                             :
                             <Button id="edit" outline color="primary" onClick={toggleEdit}>Edit</Button>

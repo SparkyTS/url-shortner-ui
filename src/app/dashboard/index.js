@@ -84,7 +84,7 @@ function Dashboard() {
 
                 <Row className="pl-2 pr-2 pt-3 pb-3 mt-3 mb-3" style={{background: "#efefef"}}>
                     <Col md={9} className="m-auto text-uppercase">
-                        <b>Shorten Urls </b>
+                        <b>Shorten URLs </b>
                     </Col>
                     <Col md={3} className="text-center">
                         <Button color="primary" onClick={toggleNew}>Shorten New URL</Button>
@@ -94,29 +94,30 @@ function Dashboard() {
                 {isNewOpen &&
                 <Row className="bg-light mb-3">
                     <Col md={12}>
-                    <Row className="p-2">
-                        <Col md={3} className="m-auto">
-                            <b>Full URL * : </b>
-                        </Col>
-                        <Col md={9}>
-                            <Input onChange={handleChange} placeholder="Enter full url" name="fullUrl" style={{wordBreak: 'break-all', height: 86}}
-                                   type="textarea" value={fullUrl}/>
-                        </Col>
-                    </Row>
-                    <Row className="p-2">
-                        <Col md={3} className="m-auto">
-                            <b>Custom Short URL : </b>
-                        </Col>
-                        <Col md={6}>{appConfigs.API_HOST}/&nbsp;
-                            <Input onChange={handleChange} className="d-inline-block w-auto" placeholder="Shorten URL (optional)"
-                                   name="customShortUrl" type="text" value={customShortUrl} maxLength={15}/>
-                        </Col>
-                        <Col md={3}>
-                            <Button id="save" outline color="primary" className="mr-2" onClick={generateNewUrl}>Generate</Button>
-                            <Button outline color="warning" onClick={() => setNewShortenUrlOptions(initialValues)}>Cancel</Button>
-                        </Col>
-                    </Row>
-                    <p className="text-muted ml-2 mt-2">Note : If you do not wish to enter a custom url, we will generate for you !</p>
+                        <Row className="p-2">
+                            <Col md={3} className="m-auto">
+                                <b>Full URL * : </b>
+                            </Col>
+                            <Col md={9}>
+                                <Input onChange={handleChange} placeholder="Enter original url here" name="fullUrl"
+                                       style={{wordBreak: 'break-all', height: 86}}
+                                       type="textarea" value={fullUrl}/>
+                            </Col>
+                        </Row>
+                        <Row className="p-2">
+                            <Col md={3} className="m-auto">
+                                <b>Custom Shorten URL : </b>
+                            </Col>
+                            <Col md={6}>{appConfigs.API_HOST}/&nbsp;
+                                <Input onChange={handleChange} className="d-inline-block w-auto" placeholder="Shorten URL (optional)"
+                                       name="customShortUrl" type="text" value={customShortUrl} maxLength={15}/>
+                            </Col>
+                            <Col md={3}>
+                                <Button id="save" outline color="primary" className="mr-2" onClick={generateNewUrl}>Generate</Button>
+                                <Button outline color="secondary" onClick={() => setNewShortenUrlOptions(initialValues)}>Cancel</Button>
+                            </Col>
+                        </Row>
+                        <p className="text-muted ml-2 mt-2">Note : If you do not wish to enter a custom url, we will generate for you !</p>
                     </Col>
                 </Row>
                 }
@@ -124,8 +125,8 @@ function Dashboard() {
                 {loading && <MyLoader/>}
                 {!urlMappings.length && !isNewOpen &&
                 <div className="text-center">
-                    <p> To shorten the url click on 'Shorten New URL' button. </p>
-                    <p> Your shorten urls will be displayed here !</p>
+                    <p> To shorten a, URL click on 'Shorten New URL' button. </p>
+                    <p> Your shortened URLs will be displayed here !</p>
                 </div>}
 
 
