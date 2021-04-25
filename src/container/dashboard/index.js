@@ -1,4 +1,6 @@
-import React, {Fragment} from "react"
+import React from "react"
+import CardDetails from "./CardDetails";
+import {Container} from "reactstrap";
 
 
 class Dashboard extends React.Component {
@@ -11,8 +13,9 @@ class Dashboard extends React.Component {
     render() {
         return (
             <>
-                Hello world
-
+                <Container>
+                    <CardDetails/>
+                </Container>
             </>
         )
     }

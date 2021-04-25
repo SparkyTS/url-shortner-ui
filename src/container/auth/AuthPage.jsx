@@ -9,6 +9,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {setCurrentUser} from "../../redux/user/UserAction";
 import {regexEnum} from "../../shared/enums";
 import {Redirect, useHistory} from "react-router";
+import './../../scss/page/authpage.scss';
 
 const initialValues = {
     name: '',
@@ -87,7 +88,7 @@ export default function AuthPage() {
         <>
             {isLoggedIn && <Redirect to="/dashboard"/>}
 
-            <div className={`container ${isSignUp ? 'sign-up-mode' : ''}`}>
+            <div className={`auth-container ${isSignUp ? 'sign-up-mode' : ''}`}>
             <div className="forms-container">
                 <div className="signin-signup">
                     <Login handleChange={handleChange} onLogin={onLogin}/>
@@ -102,7 +103,7 @@ export default function AuthPage() {
                         <p>
                             Sign up and generate unlimited shorter url and also you can manage the urls easily.
                         </p>
-                        <button className="btn transparent" id="sign-up-btn" onClick={toggle}>
+                        <button className="auth-btn transparent" id="sign-up-btn" onClick={toggle}>
                             Sign up
                         </button>
                     </div>
@@ -114,7 +115,7 @@ export default function AuthPage() {
                         <p>
                             If you already have account go ahead and sing in to manage all your shortened urls.
                         </p>
-                        <button className="btn transparent" id="sign-in-btn" onClick={toggle}>
+                        <button className="auth-btn transparent" id="sign-in-btn" onClick={toggle}>
                             Sign in
                         </button>
                     </div>

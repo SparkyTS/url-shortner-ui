@@ -11,9 +11,7 @@ class App extends Component {
         return (
             <Provider store={store}>
                 <BrowserRouter basename="/">
-                        <Fragment>
-                            <Routes />
-                        </Fragment>
+                    <Routes />
                 </BrowserRouter>
             </Provider>
         );

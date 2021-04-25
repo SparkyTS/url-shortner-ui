@@ -13,7 +13,7 @@ export  default function Login({handleChange, onLogin}){
                 <i className="fas fa-lock"/>
                 <input onChange={handleChange} name={"password"} type="password" placeholder="Password"/>
             </div>
-            <input onClick={onLogin} type="button" value="Login" className="btn solid"/>
+            <input onClick={onLogin} type="button" value="Login" className="auth-btn solid"/>
         </div>
     );
 }
