@@ -15,7 +15,7 @@ const initialValues = {
 function Dashboard() {
 
     const [urlMappings, setUrlMappings] = React.useState([]);
-    const [loading, setLoading] = React.useState(true);
+    const [loading, setLoading] = React.useState(false);
 
     const [newShortenUrlOptions, setNewShortenUrlOptions] = React.useState({
         ...initialValues
@@ -28,7 +28,7 @@ function Dashboard() {
     const fetchUrlMappings = async () => {
         setLoading(true);
         const res = await getURLMappings();
-        if (res.success) {
+        if (res?.success) {
             setUrlMappings(res.data);
         } else {
             setUrlMappings([]);
@@ -62,7 +62,7 @@ function Dashboard() {
         if(!fullUrl)
             toastErrorMessage("Please enter full url to shorten it!")
         const res = await createNewURLMapping(fullUrl, customShortUrl);
-        if(res.success){
+        if(res?.success){
             setNewShortenUrlOptions(initialValues);
             setUrlMappings([res.data, ...urlMappings]);
         } else{
@@ -117,7 +117,7 @@ function Dashboard() {
                 }
 
                 {loading && <MyLoader/>}
-                {!urlMappings.length &&
+                {!urlMappings.length && !isNewOpen &&
                 <div className="text-center">
                     <p> To shorten the url click on 'Shorten New URL' button. </p>
                     <p> Your shorten urls will be displayed here !</p>

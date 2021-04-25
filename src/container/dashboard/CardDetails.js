@@ -45,7 +45,7 @@ export default function CardDetails({urlMapping, updateMapping}) {
                 return;
             }
             const res = await updateURLMapping(urlMapping.id, shortUrl);
-            if(res.success){
+            if(res?.success){
                 toastInfoMessage(res.message);
                 updateMapping(res.data);
             } else {

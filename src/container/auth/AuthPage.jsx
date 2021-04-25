@@ -41,10 +41,10 @@ export default function AuthPage() {
     }
 
     let handleLoginSignUpResponse = async function (res) {
-        if (res.success)
+        if (res?.success)
             setTokenCookies(res.data);
         const user = await getCurrentUser();
-        if (user.success) {
+        if (user?.success) {
             dispatch(setCurrentUser(user.data));
             toastInfoMessage(`Hello ${user.data.name}, Welcome to our shorten URL service`);
         }
@@ -67,15 +67,15 @@ export default function AuthPage() {
         const {name, username, email, password} = formData;
         if(!username){
             toastErrorMessage("Please enter a valid username");
-        } else if (regexEnum.emailRegex.test(email)) {
+        } else if (!regexEnum.emailRegex.test(email)) {
             toastErrorMessage("Please enter a valid email");
         }
-        else if (regexEnum.passRegex.test(password)) {
+        else if (!regexEnum.passRegex.test(password)) {
             toastErrorMessage("Password must contain at least eight characters, at least one number and both lower and uppercase letters and special characters\"");
         } else {
             const res = await Promise.all([hasUniqueEmail(email), hasUniqueName(username)]);
             //if username and email both are unique sign up the user
-            if(res[0].success && res[1].success){
+            if(res[0]?.success && res[1]?.success){
                 const res = await signUpUser(name, username, email, password);
                 await handleLoginSignUpResponse(res);
             }
