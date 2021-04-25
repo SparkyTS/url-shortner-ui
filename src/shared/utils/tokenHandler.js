@@ -28,5 +28,5 @@ export const removeTokenCookies = () => {
     const cookies = new Cookies();
     cookies.remove(cookieEnum.ACCESS_TOKEN, {httpOnly: false});
     cookies.remove(cookieEnum.REFRESH_TOKEN, {httpOnly: false});
-    cookies.remove("token_type", {httpOnly: false});
+    cookies.remove(cookieEnum.TOKEN_TYPE, {httpOnly: false});
 }

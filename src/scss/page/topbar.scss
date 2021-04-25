@@ -1,0 +1,101 @@
+.topbar {
+  width: 100%;
+  position: fixed;
+  top: 0;
+  height: 100px;
+  z-index: 101;
+  background: $colorBackground;
+  //box-shadow: 0 2px 15px 0 rgba(0, 0, 0, 0.05);
+}
+
+.topbar__wrapper {
+  position: relative;
+  display: flex;
+  height: 100px;
+}
+
+.topbar__left {
+  position: absolute;
+  display: flex;
+  height: 100%;
+  width: 50rem;
+}
+.topbar_logo_left {
+  width: 225px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 50px;
+}
+.topbar__logo {
+  background-repeat: no-repeat;
+  background-position-y: center;
+  background-position-x: left;
+  background-size: contain;
+  height: 60%;
+  width: 84%;
+  font-size: 22px;
+  font-weight: 600;
+  color: $primaryColor;
+
+  &:hover{
+    text-decoration: none;
+    color: $primaryColor;
+  }
+
+  @media screen and (min-width: 768px) {
+    display: block;
+    // height: 35%;
+    // width: 56%;
+  }
+}
+
+@media screen and (max-width: 768px){
+  .topbar_logo_left {
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 0;
+
+    .topbar__logo {
+      height: auto;
+      width: auto;
+      img {
+        width: 110px;
+      }
+    }
+  }
+}
+
+
+.topbar__right {
+  position: absolute;
+  right: 0;
+  margin-right: 15px;
+  display: flex;
+  height: 100%;
+}
+
+.topbar__btn {
+  font-size: 18px;
+  height: 100%;
+  padding: 0 10px;
+  cursor: pointer;
+  position: relative;
+  display: -webkit-flex;
+  display: flex;
+  border: none;
+  background: transparent;
+  transition: all .3s;
+  color: $color-accent;
+    &:hover{
+      color: $primaryColor;
+    }
+}
+
+
+
+
+
+

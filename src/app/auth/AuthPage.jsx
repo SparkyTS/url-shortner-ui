@@ -41,8 +41,7 @@ export default function AuthPage() {
     }
 
     let handleLoginSignUpResponse = async function (res) {
-        if (res?.success)
-            setTokenCookies(res.data);
+        setTokenCookies(res.data);
         const user = await getCurrentUser();
         if (user?.success) {
             dispatch(setCurrentUser(user.data));
@@ -59,7 +58,8 @@ export default function AuthPage() {
             toastErrorMessage("Please enter valid password")
         } else {
             const res = await signInUser(username, password);
-            await handleLoginSignUpResponse(res);
+            if(res?.success)
+                await handleLoginSignUpResponse(res);
         }
     }
 
@@ -77,7 +77,8 @@ export default function AuthPage() {
             //if username and email both are unique sign up the user
             if(res[0]?.success && res[1]?.success){
                 const res = await signUpUser(name, username, email, password);
-                await handleLoginSignUpResponse(res);
+                if(res?.success)
+                    await handleLoginSignUpResponse(res);
             }
         }
     }

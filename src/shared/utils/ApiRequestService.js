@@ -45,12 +45,12 @@ export function request(options, validateStatus = true) {
                     toastErrorMessage("Username or password is incorrect");
                 else
                     toastErrorMessage(error.response?.data?.message)
-                window.location.href = "/"
+                setTimeout(() => window.location.href = "/", 3000);
             } else if (status === 404) {
 
             } else if (status === 400 || status === 500) {
 
             }
-            toastErrorMessage();
+            // toastErrorMessage();
         })
 }

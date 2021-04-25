@@ -3,6 +3,7 @@ import { Redirect, Route, withRouter } from "react-router-dom";
 
 import {getAccessTokenCookie} from "../utils/tokenHandler";
 import {useSelector} from "react-redux";
+import Topbar from "../../app/header/Topbar";
 
 const PrivateRoute = ({ component: Component, roles, ...rest }) => {
     const isLoggedIn = useSelector(({user}) => user.currentUser.name && getAccessTokenCookie())
@@ -14,7 +15,12 @@ const PrivateRoute = ({ component: Component, roles, ...rest }) => {
                     return <Redirect to="/auth" />;
                 }
                 // authorised so return component
-                return <Component {...props} />;
+                return <>
+                    <Topbar/>
+                    <div className={"container__wrap"}>
+                        <Component {...props} />
+                    </div>
+                </>
             }}
         />
     );

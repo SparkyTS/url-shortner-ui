@@ -1,11 +1,11 @@
 import React, {lazy, Suspense} from "react";
 import {Redirect, Switch, Route} from "react-router-dom";
-import AuthPage from "../container/auth/AuthPage";
+import AuthPage from "../app/auth/AuthPage";
 import Loading from "../shared/components/MyLoader";
 import PrivateRoute from "../shared/components/PrivateRoute";
 
 const DashBoardPage = lazy(() =>
-    import("../container/dashboard")
+    import("../app/dashboard")
 );
 export function Routes() {
     return (
