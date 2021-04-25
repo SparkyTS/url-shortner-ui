@@ -3,7 +3,7 @@ import CardDetails from "./CardDetails";
 import {Button, Col, Container, Input, Row} from "reactstrap";
 import {createNewURLMapping, getURLMappings} from "../../api/UrlMappingApi";
 import {appConfigs} from "../../config/app.config";
-import {toastErrorMessage} from "../../shared/components/ToastMessage";
+import {toastErrorMessage, toastInfoMessage} from "../../shared/components/ToastMessage";
 import MyLoader from "../../shared/components/MyLoader";
 import {regexEnum} from "../../shared/enums";
 
@@ -71,6 +71,7 @@ function Dashboard() {
         if(res?.success){
             setNewShortenUrlOptions(initialValues);
             setUrlMappings([res.data, ...urlMappings]);
+            toastInfoMessage("Shorten Url generated successfully !")
         }
     }
 
