@@ -1,6 +1,6 @@
 import React from "react";
 import SignUp from "./SignUp";
-import Login from "./Login";
+import SignIn from "./SignIn";
 import {toastErrorMessage, toastInfoMessage} from "../../shared/components/ToastMessage";
 import {signInUser, signUpUser} from "../../api/AuthApi";
 import {getAccessTokenCookie, setTokenCookies} from "../../shared/utils/tokenHandler";
@@ -89,7 +89,7 @@ export default function AuthPage() {
             <div className={`auth-container ${isSignUp ? 'sign-up-mode' : ''}`}>
             <div className="forms-container">
                 <div className="signin-signup">
-                    <Login handleChange={handleChange} onLogin={onLogin}/>
+                    <SignIn handleChange={handleChange} onLogin={onLogin}/>
                     <SignUp handleChange={handleChange} onSignUp={onSignUp}/>
                 </div>
             </div>

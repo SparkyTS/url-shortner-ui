@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Card, CardBody, CardText, Col, Input, Row, Tooltip} from "reactstrap";
+import {Button, Card, Col, Input, Row, Tooltip} from "reactstrap";
 import {appConfigs} from "../../config/app.config";
 import {deleteMapping, updateURLMapping} from "../../api/UrlMappingApi";
 import {toastErrorMessage, toastInfoMessage} from "../../shared/components/ToastMessage";
@@ -7,12 +7,10 @@ import useClippy from "use-clippy/use-clippy";
 
 export default function CardDetails({urlMapping, updateMapping}) {
 
-
     //Copy Shorten url related variables
     const [copyTooltipOpen, setCopyTooltipOpen] = React.useState(false);
     const toggleToolTip = () => setCopyTooltipOpen(!copyTooltipOpen);
-    const shortUrlRef = React.useRef();
-    const [clipboard, setClipboard] = useClippy();
+    const [, setClipboard] = useClippy();
     const copyShortenUrl = () => {
         setClipboard(`${appConfigs.API_HOST}/${urlMapping.shortUrl}`);
     }
@@ -71,7 +69,7 @@ export default function CardDetails({urlMapping, updateMapping}) {
         setMappingOptions({...mappingOptions, [e.target.name]: e.target.value})
     }
 
-    const {id, fullUrl, shortUrl, isExpanded, isEdit} = mappingOptions;
+    const {shortUrl, isExpanded, isEdit} = mappingOptions;
     return (
         <Row className="mb-3">
             <Card className="w-100 p-2">
@@ -105,7 +103,7 @@ export default function CardDetails({urlMapping, updateMapping}) {
                         {appConfigs.API_HOST}/
                         {isEdit ?
                             <Input className="d-inline-block w-auto ml-1"
-                                   onChange={handleOnChange} name="shortUrl" type="text" value={shortUrl} autoFocus/>
+                                   onChange={handleOnChange} name="shortUrl" type="text" value={shortUrl} maxLength={15} autoFocus/>
                             :
                             <>
                                 <a href={`${appConfigs.API_HOST}/${shortUrl}`}>{shortUrl}</a>
@@ -121,7 +119,6 @@ export default function CardDetails({urlMapping, updateMapping}) {
                                 </Tooltip>
                             </>
                         }
-                        <input ref={shortUrlRef} hidden value={shortUrl}/>
                     </Col>
 
                     <Col md={3} className="text-center">

@@ -1,21 +1,18 @@
-import React, {Suspense} from "react";
-import {Redirect, Switch, Route, BrowserRouter} from "react-router-dom";
+import React, {lazy, Suspense} from "react";
+import {Redirect, Switch, Route} from "react-router-dom";
 import AuthPage from "../container/auth/AuthPage";
-import Dashboard from "../container/dashboard";
 import Loading from "../shared/components/MyLoader";
 import PrivateRoute from "../shared/components/PrivateRoute";
-import {useSelector} from "react-redux";
-import {getAccessTokenCookie} from "../shared/utils/tokenHandler";
 
-// const UserProfilepage = lazy(() =>
-//     import("./modules/UserProfile/UserProfilePage")
-// );
+const DashBoardPage = lazy(() =>
+    import("../container/dashboard")
+);
 export function Routes() {
     return (
         <Suspense fallback={<Loading/>}>
                 <Switch>
                     <Route path="/auth" component={AuthPage}/>
-                    <PrivateRoute path="/dashboard" component={Dashboard}/>
+                    <PrivateRoute path="/dashboard" component={DashBoardPage}/>
                     <Redirect exact from="/" to="/dashboard"/>
                 </Switch>
         </Suspense>

@@ -1,4 +1,4 @@
-import React, {Fragment, useCallback} from "react"
+import React, {Fragment} from "react"
 import CardDetails from "./CardDetails";
 import {Button, Col, Container, Input, Row} from "reactstrap";
 import {createNewURLMapping, getURLMappings} from "../../api/UrlMappingApi";
@@ -104,7 +104,7 @@ function Dashboard() {
                         </Col>
                         <Col md={6}>{appConfigs.API_HOST}/&nbsp;
                             <Input onChange={handleChange} className="d-inline-block w-auto" placeholder="Shorten URL (optional)"
-                                   name="customShortUrl" type="text" value={customShortUrl}/>
+                                   name="customShortUrl" type="text" value={customShortUrl} maxLength={15}/>
                         </Col>
                         <Col md={3}>
                             <Button id="save" outline color="primary" className="mr-2" onClick={generateNewUrl}>Generate</Button>

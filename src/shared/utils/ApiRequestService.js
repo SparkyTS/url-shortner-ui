@@ -1,4 +1,3 @@
-import React from "react";
 import Cookies from 'universal-cookie';
 import {appConfigs} from "../../config/app.config";
 import {cookieEnum} from "../enums";
