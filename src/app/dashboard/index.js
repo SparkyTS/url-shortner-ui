@@ -4,7 +4,7 @@ import {Button, Col, Container, Input, Row} from "reactstrap";
 import {createNewURLMapping, getURLMappings} from "../../api/UrlMappingApi";
 import {appConfigs} from "../../config/app.config";
 import {toastErrorMessage, toastInfoMessage} from "../../shared/components/ToastMessage";
-import MyLoader from "../../shared/components/MyLoader";
+import Loader from "../../shared/components/Loader";
 import {regexEnum} from "../../shared/enums";
 
 const initialValues = {
@@ -122,7 +122,7 @@ function Dashboard() {
                 </Row>
                 }
 
-                {loading && <MyLoader/>}
+                {loading && <Loader/>}
                 {!urlMappings.length && !isNewOpen &&
                 <div className="text-center">
                     <p> To shorten a, URL click on 'Shorten New URL' button. </p>

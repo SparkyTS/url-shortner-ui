@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import {Link, useHistory} from "react-router-dom";
 import {removeTokenCookies} from "../../shared/utils/tokenHandler";
 import {useSelector} from "react-redux";

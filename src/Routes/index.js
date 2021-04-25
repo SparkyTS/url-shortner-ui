@@ -1,7 +1,7 @@
 import React, {lazy, Suspense} from "react";
 import {Redirect, Switch, Route} from "react-router-dom";
 import AuthPage from "../app/auth/AuthPage";
-import Loading from "../shared/components/MyLoader";
+import Loading from "../shared/components/Loader";
 import PrivateRoute from "../shared/components/PrivateRoute";
 
 const DashBoardPage = lazy(() =>
