@@ -9,7 +9,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {setCurrentUser} from "../../redux/user/UserAction";
 import {regexEnum} from "../../shared/enums";
 import {Redirect, useHistory} from "react-router";
-import './../../scss/page/authpage.scss';
 
 const initialValues = {
     name: '',
@@ -49,7 +48,6 @@ export default function AuthPage() {
             dispatch(setCurrentUser(user.data));
             toastInfoMessage(`Hello ${user.data.name}, Welcome to our shorten URL service`);
         }
-        console.log('pushing to the dashboard page');
         history.push("/dashboard");
     };
 

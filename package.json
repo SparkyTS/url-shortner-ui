@@ -24,6 +24,7 @@
     "reactstrap": "^8.9.0",
     "redux": "^4.0.5",
     "universal-cookie": "^4.0.4",
+    "use-clippy": "^1.0.8",
     "web-vitals": "^1.1.1"
   },
   "scripts": {

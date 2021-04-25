@@ -3,7 +3,7 @@ import Cookies from 'universal-cookie';
 import {appConfigs} from "../../config/app.config";
 import {cookieEnum} from "../enums";
 import {removeTokenCookies} from "./tokenHandler";
-import {toastErrorMessage} from "../components/ToastMessage";
+import {toastErrorMessage, toastInfoMessage} from "../components/ToastMessage";
 
 
 const axios = require('axios');
@@ -12,10 +12,11 @@ export function request(options, validateStatus = true) {
 
     const config = {
         headers: options['headers'] ? options['headers'] : {'Content-Type': 'application/json'},
-        url: options?.url || appConfigs.API_HOST + options['endpoint'],
+        url: options?.url || appConfigs.API_ROOT + options['endpoint'],
         method: options['method'],
         data: options['data']
     };
+
 
     const cookies = new Cookies();
     if (cookies.get(cookieEnum.ACCESS_TOKEN) && cookies.get(cookieEnum.REFRESH_TOKEN)) {
@@ -24,9 +25,11 @@ export function request(options, validateStatus = true) {
 
     return axios.request(config)
         .then(response => {
-            console.log(response.data)
             if (response.data && response.data?.success)
-                return {...response.data, success: response.data.success, info: response.data.message}
+                return {...response.data, success: response.data.success, info: response.data.message, status: response.status}
+            else if(response.status === 204) {
+                toastInfoMessage("Deleted Successfully!");
+            }
             else {
                 if(response.data?.message)
                     toastErrorMessage(response.data.message);
@@ -43,12 +46,12 @@ export function request(options, validateStatus = true) {
                     toastErrorMessage("Username or password is incorrect");
                 else
                     toastErrorMessage(error.response?.data?.message)
+                window.location.href = "/"
             } else if (status === 404) {
-                // showErrorToast("Not found");
+
             } else if (status === 400 || status === 500) {
-                throw error.response.data;
-                // showErrorToast("Something went very wrong");
+
             }
-            throw error;
+            toastErrorMessage();
         })
 }

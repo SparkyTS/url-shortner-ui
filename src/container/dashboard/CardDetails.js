@@ -1,27 +1,139 @@
 import React from "react";
-import {Button, Card, CardBody, CardText, Col, Input, Row} from "reactstrap";
+import {Button, Card, CardBody, CardText, Col, Input, Row, Tooltip} from "reactstrap";
+import {appConfigs} from "../../config/app.config";
+import {deleteMapping, updateURLMapping} from "../../api/UrlMappingApi";
+import {toastErrorMessage, toastInfoMessage} from "../../shared/components/ToastMessage";
+import useClippy from "use-clippy/use-clippy";
 
-export default function CardDetails() {
+export default function CardDetails({urlMapping, updateMapping}) {
+
+
+    //Copy Shorten url related variables
+    const [copyTooltipOpen, setCopyTooltipOpen] = React.useState(false);
+    const toggleToolTip = () => setCopyTooltipOpen(!copyTooltipOpen);
+    const shortUrlRef = React.useRef();
+    const [clipboard, setClipboard] = useClippy();
+    const copyShortenUrl = () => {
+        setClipboard(`${appConfigs.API_HOST}/${urlMapping.shortUrl}`);
+    }
+
+
+    // url mapping related variables
+    const [mappingOptions, setMappingOptions] = React.useState({
+        isEdit: false,
+        isExpanded: false,
+        ...urlMapping
+    });
+
+    const toggleExpanded = () => {
+        setMappingOptions({
+            ...mappingOptions,
+            isExpanded: !mappingOptions.isExpanded,
+        })
+    }
+
+    const deleteUrl = async () => {
+        await deleteMapping(urlMapping.id);
+        updateMapping();
+    }
+
+    const toggleEdit = async (e, withSave = false) => {
+        const newIsEdit = !mappingOptions.isEdit;
+        let newShortUrl = mappingOptions.shortUrl;
+        if(withSave) {
+            if(!shortUrl) toastErrorMessage("Please enter new short url to update !")
+            if(shortUrl === urlMapping.shortUrl) {
+                setMappingOptions({...mappingOptions, isEdit: false});
+                return;
+            }
+            const res = await updateURLMapping(urlMapping.id, shortUrl);
+            if(res.success){
+                toastInfoMessage(res.message);
+                updateMapping(res.data);
+            } else {
+                newShortUrl = urlMapping.urlMapping;
+                setMappingOptions({
+                    ...mappingOptions,
+                    shortUrl: newShortUrl,
+                    isEdit: newIsEdit,
+                });
+            }
+        } else {
+            setMappingOptions({
+                ...mappingOptions,
+                shortUrl: urlMapping.shortUrl,
+                isEdit: newIsEdit
+            });
+        }
+    }
+
+    const handleOnChange = e => {
+        setMappingOptions({...mappingOptions, [e.target.name]: e.target.value})
+    }
+
+    const {id, fullUrl, shortUrl, isExpanded, isEdit} = mappingOptions;
     return (
         <Row className="mb-3">
             <Card className="w-100 p-2">
+                {/*FULL URL SECTION */}
                 <Row className="p-2">
-                    <Col md={9}>
-                        <b>Full URL : </b> Hello world this is tanay
+                    <Col md={2}><b>Full URL : </b></Col>
+                    <Col md={7}>
+                        {
+                            isExpanded || urlMapping.fullUrl.length <= 120 ?
+                                urlMapping.fullUrl
+                                :
+                                <>
+                                    {urlMapping.fullUrl.substring(0, 120)}&nbsp;
+                                    <input type="button" className="border-0 bg-transparent text-primary" value="show more" onClick={toggleExpanded}/>
+                                </>
+                        }
+                        &nbsp;{isExpanded &&
+                    <input type="button" className="border-0 bg-transparent text-primary" value="hide" onClick={toggleExpanded}/>}
                     </Col>
 
                     <Col md={3} className="text-center">
-                        <Button outline color="danger">Delete</Button>
+                        <Button outline color="danger" onClick={deleteUrl}>Delete</Button>
                     </Col>
                 </Row>
+
+                {/*SHORT URL SECTION*/}
+
                 <Row className="p-2">
-                    <Col md={9}>
-                        <b>Short Url : </b> http://localhost:8080/<a href="/hello">hello</a>
-                        <Input type="text" value={'hello'}/>
+                    <Col md={2} className="m-auto"> <b>Short Url : </b> </Col>
+                    <Col md={7}>
+                        {appConfigs.API_HOST}/
+                        {isEdit ?
+                            <Input className="d-inline-block w-auto ml-1"
+                                   onChange={handleOnChange} name="shortUrl" type="text" value={shortUrl} autoFocus/>
+                            :
+                            <>
+                                <a href={`${appConfigs.API_HOST}/${shortUrl}`}>{shortUrl}</a>
+
+                                <button className="far fa-copy btn" onClick={copyShortenUrl} id="copy-tooltip"/>
+                                <Tooltip
+                                    placement={"right"}
+                                    isOpen={copyTooltipOpen}
+                                    target={"copy-tooltip"}
+                                    toggle={toggleToolTip}
+                                >
+                                    Copy Shorten Url
+                                </Tooltip>
+                            </>
+                        }
+                        <input ref={shortUrlRef} hidden value={shortUrl}/>
                     </Col>
 
                     <Col md={3} className="text-center">
-                        <Button outline color="primary">Edit</Button>
+                        {isEdit ?
+                            <>
+                                <Button id="save" outline color="primary" onClick={(e) => toggleEdit(e, true)}>Save</Button>
+                                &nbsp;
+                                <Button outline color="warning" onClick={toggleEdit}>Cancel</Button>
+                            </>
+                            :
+                            <Button id="edit" outline color="primary" onClick={toggleEdit}>Edit</Button>
+                        }
                     </Col>
                 </Row>
             </Card>

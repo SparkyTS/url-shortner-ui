@@ -14,14 +14,14 @@ export function getCurrentUser() {
 
 export function hasUniqueName(username) {
     return request({
-        endpoint: HAS_UNIQUE_NAME + "?username=" + username,
+        endpoint: `${HAS_UNIQUE_NAME}?username=${username}`,
         method: HttpMethod.GET
     });
 }
 
 export function hasUniqueEmail(email) {
     return request({
-        endpoint: HAS_UNIQUE_EMAIL + "?email=" + email,
+        endpoint: `${HAS_UNIQUE_EMAIL}?email=${email}`,
         method: HttpMethod.GET
     });
 }
